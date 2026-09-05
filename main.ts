@@ -1,9 +1,13 @@
+namespace SpriteKind {
+    export const Ammo = SpriteKind.create()
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     Eagle = sprites.createProjectileFromSprite(assets.image`elgle`, Guy, -100, 0)
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     sprites.destroy(sprite)
     info.changeLifeBy(-1)
+    game.setGameOverMessage(false, "I WILL LICK YOU")
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(sprite)
@@ -12,24 +16,17 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 })
 let Zombie: Sprite = null
 let Eagle: Sprite = null
-let Ammo = ""
 let Guy: Sprite = null
+let Healthh = statusbars.create(20, 4, StatusBarKind.Health)
 Guy = sprites.create(assets.image`Guy`, SpriteKind.Player)
+controller.moveSprite(Guy)
+info.setLife(5)
 Guy.setPosition(131, 60)
 scene.setBackgroundImage(assets.image`Background`)
-controller.moveSprite(Guy, 100, 100)
-info.setLife(5)
-let AmmoMenu = miniMenu.createMenu(
-miniMenu.createMenuItem(Ammo)
-)
-game.showLongText("In 1942 (not real) SNAKES ruled the world", DialogLayout.Center)
-game.showLongText("in war world II", DialogLayout.Center)
-game.showLongText("Use your eagels to defeat the snakes ", DialogLayout.Center)
-game.showLongText("Kill 150 snakes", DialogLayout.Center)
-game.showLongText("Good luck", DialogLayout.Center)
 forever(function () {
     if (info.score() == 150) {
         game.gameOver(true)
+        game.setGameOverMessage(true, "LETS GO")
     }
 })
 game.onUpdateInterval(200, function () {
